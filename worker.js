@@ -29,7 +29,7 @@ function processData(){
 		console.log(totalElement);
 		
 		data.forEach(function(item, index){
-			col.findOne({doc_id:item.number, date:curDate.toLocaleDateString()}, function(err, doc){
+			col.findOne({doc_id:item.number, date:parseDate(curDate)}, function(err, doc){
 				if(doc){
 					updateDoc(col, item, doc, curDate);
 				}else{
@@ -54,7 +54,7 @@ function insertDoc(col, item, curDate){
 	var docToInsert = {
 		
 		doc_id:item.number,
-		date: curDate.toLocaleDateString(),
+		date: parseDate(curDate),
 		name: item.name,
 		
 		loc:{
@@ -92,3 +92,7 @@ function updateDoc(col, item, docToUpdate, curDate){
 		disconectIfFinished();
 	});
 };
+
+function parseDate(dteToParse){
+	return dteToParse.getFullYear() + "-" + ((dteToParse.getMonth() + 1)%12) + "-" + dteToParse.getDate();
+}
