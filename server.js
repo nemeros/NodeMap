@@ -10,8 +10,8 @@ var restCli = new RestClient();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(express.static('.\\public'));
-app.use('/static', express.static('.\\static'));
+app.use(express.static(__dirname + '/public'));
+app.use('/static', express.static(__dirname + '/static'));
 
 var db = new dataStore({filename: '.\\data\\store\\map.db'});
 
