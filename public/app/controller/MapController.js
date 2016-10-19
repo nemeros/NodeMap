@@ -45,9 +45,14 @@ function mapCtrl($scope, mapService, $log){
 	}
 	
 	function returnMarkWithColor(obj){
-		var capacity = obj.capacity;
-		var full = obj.full;
-		var ratio = full/capacity;
+		var objReturn = {};
+		
+		objReturn.lat = obj.position.lat;
+		objReturn.lng = obj.position.lng;
+		objReturn.message = obj.name;
+		objReturn.draggable = false;
+		
+		var ratio = obj.available_bike_stands/obj.available_bikes;
 		
 		//var marker = genMarker.options;
 		
@@ -65,6 +70,6 @@ function mapCtrl($scope, mapService, $log){
 
 		obj.icon = marker;
 		
-		return obj;
+		return objReturn;
 	}
 }
