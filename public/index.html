@@ -31,10 +31,23 @@
 			</div>
 		</div>
 		
-		<div class="panel panel-info">
-			<div class="panel-heading">Data</div>
-			<div class="panel-body">{{ctrl.data}}</div>
-		</div>
+			<div class="panel panel-info">
+				<div class="panel-heading">Recherche</div>
+				<div class="panel-body">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="inputDateId">Date</label>
+							<input type="text" class="form-control" id="inputDateId" placeholder="YYYY-MM-DD" data-ng-model="ctrl.pojs.dte">
+						</div>
+						<div class="form-group">
+							<label for="inputDateId">Heure</label>
+							<input type="text" class="form-control" id="inputDateId" placeholder="0-23" data-ng-model="ctrl.pojs.hour">
+						</div>
+						 <button type="button" class="btn btn-info" data-ng-click="ctrl.submitSearch()">Rechercher</button>
+					</form>
+				</div>
+			</div>
+		
 	</div>
   
 

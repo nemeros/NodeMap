@@ -55,6 +55,7 @@ function insertDoc(col, item, curDate){
 		
 		doc_id:item.number,
 		date: curDate.toLocaleDateString(),
+		name: item.name,
 		
 		loc:{
 			lat: item.position.lat,

@@ -4,20 +4,32 @@
 angular.module('mapApp')
  .factory('mapService', mapService);
  
-mapService.$inject = ['$http', '$log'];
+mapService.$inject = ['$http', '$log', '$q'];
 
-function mapService($http, $log){
+function mapService($http, $log, $q){
 	
 	var service = {getAll: getAll};
 	
 	return service;
 	
-	function getAll(){
-		return $http.get('api/').then(successCallback, errorCallback);
+	var lastDateCalled;
+	var dataCache;
+	
+	function getAll(dte){
+		if(dte === lastDateCalled){
+			var defer = $q.defer();
+			
+			defer.resolve(dataCache);
+			return defer.promise;
+		}
+		
+		lastDateCalled = dte;
+		return $http.get('api/'+dte).then(successCallback, errorCallback);
 	}
 	
-	
 	function successCallback(response){
+		
+		dataCache = response.data;
 		return response.data;
 	};
 	

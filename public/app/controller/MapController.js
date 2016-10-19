@@ -9,34 +9,51 @@ mapCtrl.$inject = ['$scope', 'mapService', '$log'];
 
 function mapCtrl($scope, mapService, $log){
 	var vm = this;
-	vm.message = "Hey You !";
+	vm.pojs = {};
+	
 	vm.center={
 		lng: 4.842223,
         lat: 45.759723,
         zoom: 12};
 	
-	activate();
+	vm.submitSearch = submitSearch;
 	
 	var genMarker = L.ExtraMarkers.icon({
 		type: 'extraMarker',
 		icon: 'glyphicon-bookmark',
-		markerColor: 'red',
+		markerColor: 'white',
 		shape: 'square',
 		prefix: 'glyphicon'
 	  });
-	  
+	
+	activate();
+	
+	
+	////////////////////
+	//   function def
+	///////////////////
 	  
 	function activate(){
 		vm.markers = {};
+		var dteToParse = new Date();
+		vm.pojs.dte = dteToParse.getFullYear() + "-" + ((dteToParse.getMonth() + 1)%12) + "-" + dteToParse.getDate();
+		vm.pojs.hour = new Date().getHours();
 		
-		mapService.getAll().then(
+		getData(vm.pojs.dte, vm.pojs.hour);
+	}
+	
+	function submitSearch(){
+		getData(vm.pojs.dte, vm.pojs.hour);
+		$log.info("search submited");
+	}
+	
+	function getData(dte, hour){
+		mapService.getAll(dte).then(
 			function successCallback(data){
 				data.forEach(function(item, index){
-					vm.markers[index] = returnMarkWithColor(item);				
+					vm.markers[index] = returnMarkWithColor(item, hour);				
 				});
 			
-			
-				//vm.markers = { pt1:returnMarkWithColor(data[0])};
 			},
 			function errorCallback(error){
 				
@@ -44,18 +61,16 @@ function mapCtrl($scope, mapService, $log){
 		);
 	}
 	
-	function returnMarkWithColor(obj){
+	function returnMarkWithColor(obj, hour){
 		var objReturn = {};
 		
-		objReturn.lat = obj.position.lat;
-		objReturn.lng = obj.position.lng;
+		objReturn.lat = obj.loc.lat;
+		objReturn.lng = obj.loc.lng;
 		objReturn.message = obj.name;
 		objReturn.draggable = false;
 		
-		var ratio = obj.available_bike_stands/obj.available_bikes;
-		
-		//var marker = genMarker.options;
-		
+		var ratio = obj.data[String(hour)].available_bikes/obj.data[String(hour)].bike_stands;
+				
 		var marker = jQuery.extend({},genMarker.options);
 		
 		if(ratio >= 0.8){
