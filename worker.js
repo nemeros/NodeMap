@@ -49,6 +49,8 @@ function disconectIfFinished(){
 }
 
 function insertDoc(col, item, curDate){
+	var hour = (curDate.getHours() + 2) % 24;
+	
 	var docToInsert = {
 		
 		doc_id:item.number,
@@ -63,9 +65,9 @@ function insertDoc(col, item, curDate){
 			0:{},1:{},2:{},3:{},4:{},5:{},6:{},7:{},8:{},9:{},10:{},11:{},12:{},13:{},14:{},15:{},16:{},17:{},18:{},19:{},20:{},21:{},22:{},23:{}
 		}
 	};
-	docToInsert.data[curDate.getHours()].bike_stands=item.bike_stands;
-	docToInsert.data[curDate.getHours()].available_bike_stands=item.available_bike_stands;
-	docToInsert.data[curDate.getHours()].available_bikes=item.available_bikes;
+	docToInsert.data[hour].bike_stands=item.bike_stands;
+	docToInsert.data[hour].available_bike_stands=item.available_bike_stands;
+	docToInsert.data[hour].available_bikes=item.available_bikes;
 	
 	col.insert(docToInsert, function(err,newDoc){
 		if(err){
@@ -76,9 +78,11 @@ function insertDoc(col, item, curDate){
 };
 
 function updateDoc(col, item, docToUpdate, curDate){
-	docToUpdate.data[curDate.getHours()].bike_stands=item.bike_stands;
-	docToUpdate.data[curDate.getHours()].available_bike_stands=item.available_bike_stands;
-	docToUpdate.data[curDate.getHours()].available_bikes=item.available_bikes;	
+	var hour = (curDate.getHours() + 2) % 24;
+	
+	docToUpdate.data[hour].bike_stands=item.bike_stands;
+	docToUpdate.data[hour].available_bike_stands=item.available_bike_stands;
+	docToUpdate.data[hour].available_bikes=item.available_bikes;	
 	
 	col.update({_id:docToUpdate._id}, docToUpdate, function(err,newDoc){
 		if(err){
