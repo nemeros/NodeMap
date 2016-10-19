@@ -1,12 +1,12 @@
 var RestClient = require('node-rest-client').Client
- ,mongoCli = require('mongodb')
- , schedule = require('node-schedule');
+ ,mongoCli = require('mongodb');
  
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/jcd';
 
 var restCli = new RestClient();
 
 var db;
+var totalElement;
 
 mongoCli.connect(url, function(err, _db){
 	if(err){
@@ -15,32 +15,38 @@ mongoCli.connect(url, function(err, _db){
 	}
 	
 	db = _db;
+	processData();
 });
 
-// every minutes
-//var job = schedule.scheduleJob('0 */1 * * * *', processData);
-
-// every hours and 1 minute
-var job = schedule.scheduleJob('0 1 */1 * * *', processData);
-
 function processData(){
-	console.log('Working at: ' + new Date());
+	
 	var col = db.collection("velo");
 	
 	restCli.get("https://api.jcdecaux.com/vls/v1/stations?contract=Lyon&apiKey=" + process.env.API_KEY, function(data,response){
 		var curDate = new Date();
-		data.forEach(function(item, index){			
+		
+		totalElement = data.length;
+		console.log(totalElement);
+		
+		data.forEach(function(item, index){
 			col.findOne({doc_id:item.number, date:curDate.toLocaleDateString()}, function(err, doc){
 				if(doc){
 					updateDoc(col, item, doc, curDate);
 				}else{
 					insertDoc(col, item, curDate);
-				}		
+				}
 			});					
 		});
 		
 	});
 };
+
+function disconectIfFinished(){
+	totalElement--;
+	if(totalElement == 0){
+		db.close();
+	}
+}
 
 function insertDoc(col, item, curDate){
 	var docToInsert = {
@@ -65,6 +71,7 @@ function insertDoc(col, item, curDate){
 		if(err){
 			console.log(err);
 		}
+		disconectIfFinished();
 	});
 };
 
@@ -77,5 +84,6 @@ function updateDoc(col, item, docToUpdate, curDate){
 		if(err){
 			console.log(err);
 		}
+		disconectIfFinished();
 	});
 };
