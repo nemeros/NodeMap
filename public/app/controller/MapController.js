@@ -68,7 +68,7 @@ function mapCtrl($scope, mapService, $log){
 			marker.markerColor = 'red';
 		}
 
-		obj.icon = marker;
+		objReturn.icon = marker;
 		
 		return objReturn;
 	}
