@@ -1,6 +1,6 @@
 var express = require('express')
  ,bodyParser = require('body-parser')
- ,RestClient = require('node-rest-client').Client,
+ ,RestClient = require('node-rest-client').Client
  ,dataStore = require('nedb');
  
  
