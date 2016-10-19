@@ -20,25 +20,25 @@
     <![endif]-->
   </head>
   <body role="document">
-	
-	<div class="panel panel-info">
-		<div class="panel-heading">Recherche</div>
-		<div class="panel-body">
-			<form class="form-inline" data-ng-submit="ctrl.submitSearch()">
-				<div class="form-group">
-					<label for="inputDateId">Date</label>
-					<input type="text" class="form-control" id="inputDateId" placeholder="YYYY-MM-DD" data-ng-model="ctrl.pojs.dte">
-				</div>
-				<div class="form-group">
-					<label for="inputDateId">Heure</label>
-					<input type="text" class="form-control" id="inputDateId" placeholder="0-23" data-ng-model="ctrl.pojs.hour">
-				</div>
-				 <button type="submit" class="btn btn-info">Rechercher</button>
-			</form>
-		</div>
-	</div>
-		
 	<div class="container" data-ng-controller="mapCtrl as ctrl" role="main" style="margin-top:5em">
+		<div class="panel panel-info">
+			<div class="panel-heading">Recherche</div>
+			<div class="panel-body">
+				<form class="form-inline" data-ng-submit="ctrl.submitSearch()">
+					<div class="form-group">
+						<label for="inputDateId">Date</label>
+						<input type="text" class="form-control" id="inputDateId" placeholder="YYYY-MM-DD" data-ng-model="ctrl.pojs.dte">
+					</div>
+					<div class="form-group">
+						<label for="inputDateId">Heure</label>
+						<input type="text" class="form-control" id="inputDateId" placeholder="0-23" data-ng-model="ctrl.pojs.hour">
+					</div>
+					 <button type="submit" class="btn btn-info">Rechercher</button>
+				</form>
+			</div>
+		</div>
+		
+	
 		<div class="panel panel-info">
 			<div class="panel-heading">Map v&eactue;lo</div>
 			<div class="panel-body">
