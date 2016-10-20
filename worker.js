@@ -81,7 +81,7 @@ function insertDoc(col, item, curDate){
 };
 
 function updateDoc(col, item, docToUpdate, curDate){
-	var hour = (curDate.getHours() + 2) % 24;
+	var hour = curDate.format('HH');
 	
 	docToUpdate.data[hour].bike_stands=item.bike_stands;
 	docToUpdate.data[hour].available_bike_stands=item.available_bike_stands;
