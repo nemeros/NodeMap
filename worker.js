@@ -1,5 +1,6 @@
 var RestClient = require('node-rest-client').Client
- ,mongoCli = require('mongodb');
+ ,mongoCli = require('mongodb')
+ ,moment = require('moment-timezone');
  
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/jcd';
 
@@ -23,8 +24,9 @@ function processData(){
 	var col = db.collection("velo");
 	
 	restCli.get("https://api.jcdecaux.com/vls/v1/stations?contract=Lyon&apiKey=" + process.env.API_KEY, function(data,response){
-		var curDate = new Date();
 		
+		var curDate = moment.tz(new Date(), "Europe/Paris");
+				
 		totalElement = data.length;
 		console.log(totalElement);
 		
@@ -49,7 +51,7 @@ function disconectIfFinished(){
 }
 
 function insertDoc(col, item, curDate){
-	var hour = (curDate.getHours() + 2) % 24;
+	var hour = curDate.format('HH');
 	
 	var docToInsert = {
 		
@@ -70,7 +72,7 @@ function insertDoc(col, item, curDate){
 	docToInsert.data[hour].available_bike_stands=item.available_bike_stands;
 	docToInsert.data[hour].available_bikes=item.available_bikes;
 	
-	col.insert(docToInsert, function(err,newDoc){
+	col.insert(docToInsert, function(err, newDoc){
 		if(err){
 			console.log(err);
 		}
@@ -94,5 +96,5 @@ function updateDoc(col, item, docToUpdate, curDate){
 };
 
 function parseDate(dteToParse){
-	return dteToParse.getFullYear() + "-" + ((dteToParse.getMonth() + 1)%12) + "-" + dteToParse.getDate();
+	return dteToParse.format('YYYY-MM-DD');
 }
