@@ -1,7 +1,8 @@
 var express = require('express')
  ,bodyParser = require('body-parser')
  ,RestClient = require('node-rest-client').Client
- , mongoClient = require('mongodb');
+ , mongoClient = require('mongodb')
+ ,compression = require('compression');
  
  
 var app = express();
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 app.use('/static', express.static(__dirname + '/static'));
 
+app.use(compression());
 
 var db;
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/jcd';
