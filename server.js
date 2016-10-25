@@ -3,7 +3,8 @@ var express = require('express')
  ,RestClient = require('node-rest-client').Client
  , mongoClient = require('mongodb')
  ,compression = require('compression')
- ,cluster = require('cluster');
+ ,cluster = require('cluster')
+ ,numCPUs = require('os').cpus().length;
  
 if (cluster.isMaster) {
 	console.log("num cpu : " +numCPUs);
