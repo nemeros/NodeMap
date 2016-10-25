@@ -20,7 +20,7 @@ var db;
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/jcd';
 
 
-mongoClient.connect(url, function(err, _db){
+mongoClient.connect(url, {poolSize:50},function(err, _db){
 	if(err){
 		console.log(err);
 		process.exit(1);
