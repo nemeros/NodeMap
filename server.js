@@ -8,6 +8,7 @@ var express = require('express')
  
 
 numCPUs = process.env.MAX_THREAD || numCPUs;
+var poolSize = process.env.POOL_SIZE || 10;
 
 if (cluster.isMaster) {
 	console.log("num cpu : " +numCPUs);
@@ -36,7 +37,7 @@ function spawnServer(){
 	var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/jcd';
 
 
-	mongoClient.connect(url, {poolSize:20},function(err, _db){
+	mongoClient.connect(url, {poolSize:poolSize},function(err, _db){
 		if(err){
 			console.log(err);
 			process.exit(1);
