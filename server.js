@@ -6,6 +6,9 @@ var express = require('express')
  ,cluster = require('cluster')
  ,numCPUs = require('os').cpus().length;
  
+
+numCPUs = process.env.MAX_THREAD || numCPUs;
+
 if (cluster.isMaster) {
 	console.log("num cpu : " +numCPUs);
 	for (var i = 0; i < numCPUs; i++) {
